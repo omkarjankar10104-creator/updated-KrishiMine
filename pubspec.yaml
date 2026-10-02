@@ -1,0 +1,92 @@
+name: krishimind
+description: "KrishiMind — AI farming advisor for Maharashtra farmers."
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.12.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+
+  # Saves the farmer's language and district on the phone, so the app only
+  # ever asks once. Cleared only when the app is uninstalled.
+  shared_preferences: ^2.3.3
+
+  # Fetches the weather from Open-Meteo. No API key, no account, free.
+  http: ^1.2.2
+
+  # Firebase — real user accounts. firebase_core connects the app to the
+  # project; firebase_auth handles sign up, sign in and passwords. Passwords are
+  # stored encrypted by Google and never touch our code.
+  firebase_core: ^3.8.0
+  firebase_auth: ^5.3.3
+
+  # Voice. Both use what is already built into the phone, so there is no server
+  # to pay for and no account to create.
+  #   speech_to_text — turns the farmer's speech into text, in Marathi, Hindi or
+  #     English, using Android's own recogniser.
+  #   flutter_tts    — reads the answer back out loud. This is the half that
+  #     matters most: a farmer who cannot read gets nothing from a screen full
+  #     of text, however good the advice is.
+  speech_to_text: ^7.4.0
+  flutter_tts: ^4.2.5
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+  # Generates the app icon in all the sizes Android needs, from one image.
+  # A dev dependency: it is a tool we run, not code that ships in the app.
+  # Run it with:  dart run flutter_launcher_icons
+  flutter_launcher_icons: ^0.14.4
+
+# ---------------------------------------------------------------------------
+# App icon
+#
+# Android has two kinds of icon and we provide both:
+#
+#   image_path            the plain square icon, for older Android versions
+#   adaptive_icon_*       two separate layers — background and foreground —
+#                         which newer Android combines and then masks into
+#                         whatever shape the launcher uses: circle, squircle,
+#                         rounded square. Because the mask can cut off the outer
+#                         quarter, launcher_foreground.png has the emblem sitting
+#                         inside the middle 60% on a transparent canvas. Using
+#                         the full-bleed emblem here would shave the leaf.
+# ---------------------------------------------------------------------------
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: false
+  image_path: "assets/branding/launcher_icon.png"
+  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_foreground: "assets/branding/launcher_foreground.png"
+  min_sdk_android: 23
+
+flutter:
+  uses-material-design: true
+
+  # Our brand artwork. Everything inside this folder is bundled into the app.
+  assets:
+    - assets/branding/
+    # Crop pictures, one per crop, named after the crop in lowercase English:
+    # sugarcane.png, grapes.png, pomegranate.png ...
+    # Any crop without a picture here falls back to a drawn illustration, so the
+    # app never breaks because a file is missing.
+    - assets/crops/
+
+  # Devanagari font, bundled so Marathi and Hindi text renders correctly
+  # even with no internet. Noto Sans Devanagari is under the SIL Open Font
+  # License, which allows use in apps.
+  fonts:
+    - family: NotoSansDevanagari
+      fonts:
+        - asset: fonts/NotoSansDevanagari-Regular.ttf
+        - asset: fonts/NotoSansDevanagari-SemiBold.ttf
+          weight: 600
+        - asset: fonts/NotoSansDevanagari-Bold.ttf
+          weight: 700
